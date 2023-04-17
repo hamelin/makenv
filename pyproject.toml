@@ -1,6 +1,6 @@
 [project]
 name = "prepenv"
-version = "0.0.1"
+version = "1.0"
 description = "Prepares a standard data science environment for me"
 authors = [{name = "Benoit Hamelin", email = "benoit@benoithamelin.com"}]
 readme = "README.md"
