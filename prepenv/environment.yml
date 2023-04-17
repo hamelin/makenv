@@ -1,0 +1,16 @@
+dependencies:
+    - ipykernel
+    - ipywidgets
+    - jupyterlab
+    - matplotlib
+    - numba
+    - numpy
+    - pandas
+    - python>=3.9
+    - requests
+    - scipy
+    - scikit-learn
+    - seaborn
+    - setuptools
+    - tqdm
+    - wheel
