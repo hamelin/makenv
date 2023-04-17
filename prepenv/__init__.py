@@ -1,7 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass
 import importlib.resources as resources
-from importlib.resources.abc import Traversable
 import logging as lg
 import os
 from pathlib import Path
@@ -69,7 +68,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def environment_resource() -> Traversable:
+def environment_resource() -> str:
     return (resources.files(__name__) / "environment.yml").read_text()
 
 
