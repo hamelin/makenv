@@ -1,6 +1,6 @@
 [project]
 name = "makenv"
-version = "1.0"
+version = "1.0.1"
 description = "Prepares a Conda environment (and Jupyter kernel)"
 authors = [{name = "Benoit Hamelin", email = "benoit@benoithamelin.com"}]
 readme = "README.md"
