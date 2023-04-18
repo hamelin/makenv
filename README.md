@@ -1,16 +1,16 @@
-# prepenv
+# `makenv` -- Minimal Conda environments and Jupyter kernels made quickly
 
-Prepares a standard environment from which to peruse Jupyter notebooks, typically for data scientific purposes.
+Prepares a Conda environment, with a particular facility towards installing it as a Jupyter kernel.
 
 ## Install
 
 ```sh
-pip install git+https://github.com/hamelin/prepenv.git
+pip install git+https://github.com/hamelin/makenv.git
 ```
 
 ## Usage
 
-Look up `prepenv --help`.
+Look up `makenv --help`.
 
 The script puts a default environment file at `$HOME/.config/prepenv/environment.yml`, to which the script's help dump refers as the *fallback environment*.
 It can be edited as fashions come and go.
