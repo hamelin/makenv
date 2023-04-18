@@ -124,7 +124,7 @@ def prepare_env_create(args: Namespace, envfile: Path) -> Tuple[Command, Handle]
         [
             conda_executable(),
             "env",
-            "create",
+            "update",
             "--file",
             str(envfile),
             *args_conda
@@ -158,7 +158,17 @@ def prepare_kernel_install(args: Namespace, handle: Handle) -> Command:
     ]
 
 
-def validate(envfile: Path, cmd_conda: Command, cmd_ipykernel: Command) -> None:
+def validate(
+    envfile: Path,
+    env_handle: Handle,
+    cmd_conda: Command,
+    cmd_ipykernel: Command
+) -> None:
+    cp = sp.run(
+        [conda_executable(), "run", *env_handle, "echo", "hey"],
+        capture_output=True
+    )
+    env_exists = (cp.returncode == 0)
     try:
         num_columns = int(os.environ.get("COLUMNS", "88"))
         header = f"=== {envfile} "
@@ -166,7 +176,7 @@ def validate(envfile: Path, cmd_conda: Command, cmd_ipykernel: Command) -> None:
         print(header)
         print(envfile.read_text())
         print("=" * (num_columns - 1))
-        print("\nEnvironment creation:")
+        print(f"\nEnvironment setup:  {'*** ALREADY EXISTS ***' if env_exists else ''}")
         print(f"    {shlex.join(cmd_conda)}")
         print("\nJupyter kernel setup:")
         print(f"    {shlex.join(cmd_ipykernel)}")
@@ -181,10 +191,10 @@ def main():
     set_up_fallback()
     args = parse_args()
     envfile = get_environment_file(args).resolve()
-    cmd_conda, env_handle = prepare_env_create(args, envfile)
-    cmd_ipykernel = prepare_kernel_install(args, env_handle)
+    cmd_conda, envhandle = prepare_env_create(args, envfile)
+    cmd_ipykernel = prepare_kernel_install(args, envhandle)
     if not args.yes:
-        validate(envfile, cmd_conda, cmd_ipykernel)
+        validate(envfile, envhandle, cmd_conda, cmd_ipykernel)
 
     try:
         sp.run(cmd_conda, check=True)
