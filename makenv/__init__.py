@@ -137,7 +137,7 @@ def prepare_kernel_install(args: Namespace, handle: Handle) -> Command:
     if args.kernel_name is not None:
         name_kernel = args.kernel_name
     elif args.name is not None:
-        name_kernel = args.kernel_name
+        name_kernel = args.name
     else:
         name_kernel = re.sub(r"[^a-z0-9_]", "_", args.display_name.lower())
 
@@ -178,7 +178,7 @@ def validate(
         print("=" * (num_columns - 1))
         print(f"\nEnvironment setup:  {'*** ALREADY EXISTS ***' if env_exists else ''}")
         print(f"    {shlex.join(cmd_conda)}")
-        print("\nJupyter kernel setup:")
+        print("\nJupyter kernel setup (maybe):")
         print(f"    {shlex.join(cmd_ipykernel)}")
         input("\n<<< Type ENTER to continue, Ctrl+C to abort >>>")
     except KeyboardInterrupt:
@@ -198,6 +198,12 @@ def main():
 
     try:
         sp.run(cmd_conda, check=True)
-        sp.run(cmd_ipykernel, check=True)
+        if sp.run(
+            [conda_executable(), "run", *envhandle, "python", "-c", "import ipykernel"],
+            capture_output=True
+        ).returncode == 0:
+            sp.run(cmd_ipykernel, check=True)
+        else:
+            LOG.warning("Not installing the environment as a IPython kernel.")
     except sp.CalledProcessError as err:
         sys.exit(err.returncode)
