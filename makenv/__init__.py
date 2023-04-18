@@ -107,7 +107,11 @@ Command = List[str]
 Handle = Tuple[str, str]
 
 
-def prepare_env_create(args: Namespace, envfile: Path) -> Tuple[Command, str]:
+def conda_executable() -> str:
+    return os.environ.get("CONDA_EXE", "conda")
+
+
+def prepare_env_create(args: Namespace, envfile: Path) -> Tuple[Command, Handle]:
     if args.name is not None:
         args_conda = ["-n", args.name]
     else:
@@ -118,7 +122,7 @@ def prepare_env_create(args: Namespace, envfile: Path) -> Tuple[Command, str]:
             args_conda = ["-p", args.directory]
     return (
         [
-            os.environ.get("CONDA_EXE", "conda"),
+            conda_executable(),
             "env",
             "create",
             "--file",
@@ -138,7 +142,7 @@ def prepare_kernel_install(args: Namespace, handle: Handle) -> Command:
         name_kernel = re.sub(r"[^a-z0-9_]", "_", args.display_name.lower())
 
     return [
-        "conda",
+        conda_executable(),
         "run",
         *handle,
         "--no-capture-output",
