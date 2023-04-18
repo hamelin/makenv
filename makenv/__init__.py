@@ -15,7 +15,7 @@ import yaml
 
 __all__ = []
 LOG = lg.getLogger(__name__)
-_path_fallback = Path("~/.config/prepenv/environment.yml").expanduser()
+_path_fallback = Path("~/.config/makenv/environment.yml").expanduser()
 
 
 def parse_args():
